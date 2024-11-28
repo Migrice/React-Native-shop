@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {FontAwesome} from "@expo/vector-icons"
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
