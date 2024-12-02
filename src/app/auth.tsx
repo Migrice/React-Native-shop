@@ -5,12 +5,15 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fsv, wp } from "@/utilities/responsives";
 import React from "react";
+import { supabase } from "@/lib/supabase";
+import { Toast } from "react-native-toast-notifications";
 
 const authSchema = zod.object({
   email: zod.string().email({ message: "Invalid email address" }),
@@ -28,12 +31,45 @@ const Auth = () => {
     },
   });
 
-  const signIn = (data: zod.infer<typeof authSchema>) => {
+  const signIn = async(data: zod.infer<typeof authSchema>) => {
+
+    const {data: {session}, error} = await supabase.auth.signInWithPassword(data)
+
+    if (error) {
+      Alert.alert(error.message)}
+    else {
+      Toast.show("Sign In successfully", {
+        type: "success", 
+        placement: "top"
+      })
+      reset()
+    }
+
     console.log(data);
     reset()
   };
-  const signUp = (data: zod.infer<typeof authSchema>) => {
+  const  signUp = async(data: zod.infer<typeof authSchema>) => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+    })
+
+    if (error) {
+      Alert.alert(error.message)}
+    else {
+      Toast.show("Sign Up successfully", {
+        type: "success", 
+        placement: "top",
+        duration: 1500,
+        
+      })
+      reset()
+    }
     console.log(data);
+  
   };
 
   return (
