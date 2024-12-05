@@ -17,7 +17,7 @@ const TabsLayout = () => {
   const {session, mouting, user} = useAuth()
 
   if (mouting) return <ActivityIndicator/>
-  //if (!session) return <Redirect href="/auth"/>
+  if (!session) return <Redirect href="/auth"/>
   return (
     <SafeAreaView edges={['top']} style={styles.safeArea}>
       <Tabs
@@ -29,7 +29,7 @@ const TabsLayout = () => {
           tabBarStyle:{
             borderTopLeftRadius:20,
             borderTopRightRadius:20,
-            paddingTop:10,
+            paddingTop:10, 
             paddingBottom:5,
             height:65
           },

@@ -15,7 +15,7 @@ export const ProductListItem = ({ product }: { product: Product }) => {
             <Text style={styles.itemPrice}>${product.price.toFixed(2)}</Text>
           </View>
         </Pressable>
-    </Link>
+    </Link> 
   );
 };
 
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   itemTitle: {
-    fontSize: fsv(13),
+    fontSize: fsv(11),
     color: "#888",
   },
   itemPrice: {

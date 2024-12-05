@@ -20,9 +20,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState(null);
   const [mouting, setMounting] = useState(true);
 
-
-
-  
   useEffect(() => {
     const fetchSession = async () => {
       const {

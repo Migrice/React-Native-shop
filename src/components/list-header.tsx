@@ -5,6 +5,7 @@ import {
   FlatList,
   Pressable,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import { fsv, wp, hp } from "@/utilities/responsives";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -12,9 +13,36 @@ import { Image } from "react-native";
 import { CATEGORIES } from "../../assets/categories";
 import { Link } from "expo-router";
 import { useCartStore } from "@/store/cart-store";
+import * as zod from "zod";
+import { supabase } from "@/lib/supabase";
+import { Toast } from "react-native-toast-notifications";
 
 const ListHeader = () => {
   const { getItemCount } = useCartStore();
+
+  const signOut = async() => {
+    const {data, error} = await supabase.auth.getSession()
+
+    if (data){
+      const { error} = await supabase.auth.signOut()
+
+    if (error) {
+      Alert.alert(error.message)}
+    else {
+      Toast.show("Sign Out successfully", {
+        type: "success", 
+        placement: "top"
+      })
+    }
+
+    } else{
+      console.log("error",error );
+      
+    }
+    
+
+  };
+
   return (
     <View style={[styles.headerContainer]}>
       <View style={styles.headerTop}>
@@ -48,7 +76,7 @@ const ListHeader = () => {
               )}
             </Pressable>
           </Link>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={signOut} >
             <FontAwesome name="sign-out" size={24} color="red" />
           </TouchableOpacity>
         </View>

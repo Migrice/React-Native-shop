@@ -14,6 +14,7 @@ import { fsv, wp } from "@/utilities/responsives";
 import React from "react";
 import { supabase } from "@/lib/supabase";
 import { Toast } from "react-native-toast-notifications";
+import { Redirect } from "expo-router";
 
 const authSchema = zod.object({
   email: zod.string().email({ message: "Invalid email address" }),
@@ -66,7 +67,9 @@ const Auth = () => {
         duration: 1500,
         
       })
+      
       reset()
+
     }
     console.log(data);
   
