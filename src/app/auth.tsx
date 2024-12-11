@@ -5,7 +5,7 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as zod from "zod";
@@ -15,6 +15,7 @@ import React from "react";
 import { supabase } from "@/lib/supabase";
 import { Toast } from "react-native-toast-notifications";
 import { Redirect } from "expo-router";
+import { useAuth } from "@/providers/auth-provider";
 
 const authSchema = zod.object({
   email: zod.string().email({ message: "Invalid email address" }),
@@ -24,6 +25,10 @@ const authSchema = zod.object({
 });
 
 const Auth = () => {
+  const { session } = useAuth();
+
+  if (session) return <Redirect href="/" />;
+
   const { control, handleSubmit, formState, reset } = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -32,47 +37,43 @@ const Auth = () => {
     },
   });
 
-  const signIn = async(data: zod.infer<typeof authSchema>) => {
-
-    const {data: {session}, error} = await supabase.auth.signInWithPassword(data)
+  const signIn = async (data: zod.infer<typeof authSchema>) => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signInWithPassword(data);
 
     if (error) {
-      Alert.alert(error.message)}
-    else {
+      Alert.alert(error.message);
+    } else {
       Toast.show("Sign In successfully", {
-        type: "success", 
-        placement: "top"
-      })
-      reset()
+        type: "success",
+        placement: "top",
+      });
+      reset();
     }
-
-    console.log(data);
-    reset()
   };
-  const  signUp = async(data: zod.infer<typeof authSchema>) => {
+  const signUp = async (data: zod.infer<typeof authSchema>) => {
     const {
       data: { session },
       error,
     } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
-    })
+    });
 
     if (error) {
-      Alert.alert(error.message)}
-    else {
+      Alert.alert(error.message);
+    } else {
       Toast.show("Sign Up successfully", {
-        type: "success", 
+        type: "success",
         placement: "top",
         duration: 1500,
-        
-      })
-      
-      reset()
+      });
 
+      reset();
     }
     console.log(data);
-  
   };
 
   return (
@@ -109,7 +110,7 @@ const Auth = () => {
               </>
             )}
           />
-          
+
           <Controller
             control={control}
             name="password"
@@ -132,15 +133,21 @@ const Auth = () => {
               </>
             )}
           />
-          <TouchableOpacity style={styles.button} onPress={handleSubmit(signIn)} disabled={formState.isSubmitting}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(signIn)}
+            disabled={formState.isSubmitting}
+          >
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSubmit(signUp)} disabled={formState.isSubmitting}>
+
+          <TouchableOpacity
+            style={[styles.button, styles.signUpButton]}
+            onPress={handleSubmit(signUp)}
+            disabled={formState.isSubmitting}
+          >
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
-
-
         </View>
       </View>
     </ImageBackground>
@@ -178,41 +185,40 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     fontSize: fsv(16),
   },
-  input:{
-    backgroundColor:"rgba(255,255,255,0.9)",
+  input: {
+    backgroundColor: "rgba(255,255,255,0.9)",
     width: wp(90),
-    padding:fsv(12),
-    borderRadius:fsv(8),
-    fontSize:fsv(16),
-    color:"#000",
-    marginBottom:fsv(16)
+    padding: fsv(12),
+    borderRadius: fsv(8),
+    fontSize: fsv(16),
+    color: "#000",
+    marginBottom: fsv(16),
   },
-  error:{
-    color:"red",
-    fontSize:fsv(12),
-    marginBottom:fsv(16),
-    textAlign:"left",
-    width:wp(90)
+  error: {
+    color: "red",
+    fontSize: fsv(12),
+    marginBottom: fsv(16),
+    textAlign: "left",
+    width: wp(90),
   },
-  button:{
-    width:wp(90),
-    alignItems:"center",
-    justifyContent:'center',
-    borderRadius:fsv(8),
-    padding:fsv(14),
-    marginBottom:fsv(16),
-    backgroundColor:"#6a1b9a"
+  button: {
+    width: wp(90),
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: fsv(8),
+    padding: fsv(14),
+    marginBottom: fsv(16),
+    backgroundColor: "#6a1b9a",
   },
-  buttonText:{
-    color:"white",
-    fontWeight:"bold",
-    fontSize:fsv(16)
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: fsv(16),
   },
-  signUpButton:{
-    borderWidth:1,
-    borderStyle:"solid",
-    borderColor:"white",
-    backgroundColor:"transparent"
+  signUpButton: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "white",
+    backgroundColor: "transparent",
   },
-  
 });

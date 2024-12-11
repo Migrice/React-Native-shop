@@ -26,7 +26,7 @@ const Category = () => {
           resizeMode="cover"
         />
       </View>
-      <Text style={styles.categoryName}>{category.name}</Text>
+      <Text style={styles.categoryName}>Products</Text>
 
       <FlatList
         data={category.products}
@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
   categoryName: {
     fontWeight: "bold",
     fontSize: fsv(20),
+    textAlign:"center",
+    marginTop:fsv(10)
   },
   flatListContent: {
     paddingBottom: wp(20),

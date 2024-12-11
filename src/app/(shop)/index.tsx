@@ -4,10 +4,11 @@ import { PRODUCTS } from "../../../assets/products";
 import { ProductListItem } from "../../components/product-list-item";
 import { wp } from "@/utilities/responsives";
 import ListHeader from "@/components/list-header";
+import { useAuth } from "@/providers/auth-provider";
 
 const Home = () => {
+
   return (
-  
     <View>
       <FlatList
         data={PRODUCTS}

@@ -5,7 +5,7 @@ import {
   FlatList,
   Pressable,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { fsv, wp, hp } from "@/utilities/responsives";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -13,34 +13,23 @@ import { Image } from "react-native";
 import { CATEGORIES } from "../../assets/categories";
 import { Link } from "expo-router";
 import { useCartStore } from "@/store/cart-store";
-import * as zod from "zod";
 import { supabase } from "@/lib/supabase";
-import { Toast } from "react-native-toast-notifications";
+import { useAuth } from "@/providers/auth-provider";
 
 const ListHeader = () => {
   const { getItemCount } = useCartStore();
 
-  const signOut = async() => {
-    const {data, error} = await supabase.auth.getSession()
+  const { user } = useAuth();
 
-    if (data){
-      const { error} = await supabase.auth.signOut()
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
-      Alert.alert(error.message)}
-    else {
-      Toast.show("Sign Out successfully", {
-        type: "success", 
-        placement: "top"
-      })
-    }
-
-    } else{
-      console.log("error",error );
+      Alert.alert(error.message);
+    } else {
+      console.log("Sign out successfully");
       
     }
-    
-
   };
 
   return (
@@ -48,14 +37,16 @@ const ListHeader = () => {
       <View style={styles.headerTop}>
         <View style={styles.headerLeft}>
           <View style={styles.avatar}>
-
-        <FontAwesome name="user" size={24} color="black"   />
+            <FontAwesome name="user" size={24} color="black" />
           </View>
-          {/* <Image
-            style={styles.avatar}
-            source={{ uri: "https://via.placeholder.com/40" }}
-          /> */}
-          <Text> Hello Emelda!</Text>
+          <Text>
+            {" "}
+            Hi{" "}
+            <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+              {user.email}
+            </Text>
+            !
+          </Text>
         </View>
 
         <View style={styles.headerRight}>
@@ -76,7 +67,7 @@ const ListHeader = () => {
               )}
             </Pressable>
           </Link>
-          <TouchableOpacity onPress={signOut} >
+          <TouchableOpacity onPress={signOut}>
             <FontAwesome name="sign-out" size={24} color="red" />
           </TouchableOpacity>
         </View>
@@ -141,8 +132,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems:"center",
-    justifyContent:"center"
+    alignItems: "center",
+    justifyContent: "center",
   },
   headerRight: {
     flexDirection: "row",
