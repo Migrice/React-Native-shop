@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.migrice.rnshop"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -28,7 +29,16 @@
       "expo-router",
       "expo-secure-store"
     ],
-    "assetBundlePatterns": ["**/*"]
-
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5664161f-9f0b-4d09-bfad-ee104e1f7eac"
+      }
+    }
   }
 }
