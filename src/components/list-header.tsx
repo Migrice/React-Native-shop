@@ -43,7 +43,7 @@ const ListHeader = () => {
             {" "}
             Hi{" "}
             <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-              {user.email}
+              User
             </Text>
             !
           </Text>
